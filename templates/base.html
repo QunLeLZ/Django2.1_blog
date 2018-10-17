@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh">
+<head>
+    <title>无此人 &amp; blog</title>
+
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- css -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
+
+    <!-- js -->
+    <script src="{% static 'blog/js/jquery-2.1.3.min.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/pace.min.js' %}"></script>
+    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+</head>
+
+<body>
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="{% url 'index' %}"><b>无此人</b> &amp; blog</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+            <div class="col-md-8 col-sm-7 col-xs-4">
+                <nav class="main-nav" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="trigger-overlay" class="navbar-toggle">
+                            <span class="ion-navicon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="cl-effect-11"><a href="{% url 'index' %}" data-hover="首页">首页</a></li>
+                            <li class="cl-effect-11"><a href="../django-blog-tutorial-templates-master/full-width.html" data-hover="博客">博客</a></li>
+                            <li class="cl-effect-11"><a href="{% url 'about_me' %}" data-hover="关于">关于</a></li>
+                            <!-- <li class="cl-effect-11"><a href="../django-blog-tutorial-templates-master/contact.html" data-hover="联系">联系</a></li> -->
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+            </div><!-- col-md-8 -->
+        </div>
+    </header>
+</div>
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                {% block main %}
+                {% endblock main %}
+            </main>
+            <aside class="col-md-4">
+                {% block toc %}
+                {% endblock toc %}
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新文章</h3>
+                    <ul>
+                        {% for new_post in new_list %}
+                            <li><a href="{% url 'detail' new_post.pk %}">{{ new_post.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">归档</h3>
+                    <ul>
+                    {% regroup date_list by year as dates_by_year %}
+                        {% for year in dates_by_year %}
+                            {% regroup year.list by month as dates_by_month %}
+                            {% for month in dates_by_month %}
+                                <li><a href="{% url 'archives' year=year.grouper month=month.grouper %}">{{ year.grouper }}年{{ month.grouper }}月</a></li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                    <ul>
+                        {% for category in category_list %}
+                        <li>
+                            <a href="{% url 'category_menu' category.id %}">{{ category }}<span class="post-count">({{ category.num_posts }})</span></a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-tag-cloud">
+                    <h3 class="widget-title">标签云</h3>
+                    <ul>
+                        {% for tag in tag_list %}
+                        <li>
+                            <a href="{% url 'search_tag' tag %}">{{ tag }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="rss">
+                    <a href="{% url 'rss' %}"><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">&copy 2018 - 感谢<a href="https://www.zmrenwu.com/"
+                                                        target="_blank" title="追梦人物">追梦人物</a>
+                    - 由<a href="http://zmrenwu.com/" title="无此人" target="_blank">无此人的博客</a>修改
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Menu -->
+<div class="overlay overlay-hugeinc">
+    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+    <nav>
+        <ul>
+            <li><a href="blog/index.html">首页</a></li>
+            <li><a href="../django-blog-tutorial-templates-master/full-width.html">博客</a></li>
+            <li><a href="blog/about.html">关于</a></li>
+            <!-- <li><a href="../django-blog-tutorial-templates-master/contact.html">联系</a></li> -->
+        </ul>
+    </nav>
+</div>
+
+<script src="{% static 'blog/js/script.js' %}"></script>
+
+</body>
+</html>
