@@ -16,12 +16,14 @@
                     <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
                 </div>
             </header>
+            {% autoescape off %}
             <div class="entry-content clearfix">
                 <p>{{ post.body|truncatechars:200 }}</p>
                 <div class="read-more cl-effect-14">
                     <a href="{% url 'detail' post.pk %}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                 </div>
             </div>
+            {% endautoescape %}
         </article>
     {% empty %}
         <div class="no-post">暂时还没有发布的文章！</div>

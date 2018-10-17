@@ -13,9 +13,11 @@
                 <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
             </div>
         </header>
+        {% autoescape off %}
         <div class="entry-content clearfix">
             {{ post.body }}
         </div>
+        {% endautoescape %}
     </article>
     <section class="comment-area" id="comment-area">
         <hr>
